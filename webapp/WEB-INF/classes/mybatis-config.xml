@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/> <!-- 혹시나 비어있는값이 들어있다면 null 로써 인식을 해라 -->
+	</settings>
+	<!-- VO클래스의 풀네임(패키지 + 클래스)을 단순 클래스 명만으로 쓰기위해 별칭을 등록하는 부분 -->
+	<typeAliases>
+			
+	</typeAliases>	
+	<!-- 어떤 DB에 연결할것인지 정보를 선언하는 부분. -->
+	<environments default="development">  <!-- default는 여러개의 DB 가 연결됐다라는걸 가정할때 기본적으로 연결할 환경을 지정하는 속성 -->
+		<environment id="development">
+			<!-- 
+			JDBC : 수동 커밋 commit (처리를 직접 처리하겠따)
+			MANAGED : 자동 commit
+			 -->
+			<transactionManager type="JDBC"/>
+			
+			<!-- Connection Pool 을 사용할것인지 안쓸것인지를 선언 
+				 
+				 POOLED: 
+				 UNPOOLED:
+				 
+				 ConnectionPool : 한번 생성된 Connection 객체를 ConnectionPool 에 담아두고 다시 생성요청이 들어오면
+				 				   이미 생성된 객체를 재사용 하겠다.
+			-->
+			<dataSource type="POOLED">
+			<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+			<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+			<property name="username" value="mybatis"/>
+			<property name="password" value="mybatis"/>
+			</dataSource>
+		</environment>	
+	</environments>
+	<!-- sql문들이 작성되어있는 mapper 파일들을 등록하는 부분. -->
+	<mappers>
+		<mapper resource="mappers/member-mapper.xml"/>
+	</mappers>
+</configuration>
+  
+  

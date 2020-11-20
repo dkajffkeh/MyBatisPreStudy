@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 유효성체크를 위한 dtd 를 명시 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 실행하고자 하는 sql문 종류에 따라 태그 작성후 sql 문 기술 
+  
+  	   DAO에서 각 sql문을 찾아서 실행할 수 있도록 고유한 id 부여
+  	   
+  	    쿼리문 기본적으로 PreparedStatment 임
+  	    ?(폴더) 대신 
+  	    #{필드명 또는 변수명 또는 키값.} 사용
+  	    
+  	    id : 외부에서 DAO에서 참조하기 위한 해당 sql문의 고유 아이디
+  	    ParameterType : 해당 sql문에 전달된 객체의 타입(풀네임) 또는 별칭
+  	    
+  	    	
+  -->
+<mapper namespace="memberMapper">
+	<insert id="insertMember" 
+	        parameterType="com.home.mybatis.member.model.vo.Member">
+		INSERT INTO
+           MEMBER
+           (
+           USER_NO
+          ,USER_ID
+          ,USER_PWD
+          ,USER_NAME
+          ,EMAIL
+          ,BIRTHDAY
+          ,GENDER
+          ,PHONE
+          ,ADDRESS
+           )
+           VALUES
+           (
+           SEQ_UNO.NEXTVAL
+          ,#{userId}
+          ,#{userPwd}
+          ,#{userName}
+          ,#{userEmail}
+          ,#{birthday}
+          ,#{gender}
+          ,#{phone}
+          ,#{address}
+           )
+	</insert>
+</mapper>  
