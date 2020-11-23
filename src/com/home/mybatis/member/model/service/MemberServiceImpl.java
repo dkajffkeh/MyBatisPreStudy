@@ -8,7 +8,8 @@ import com.home.mybatis.member.model.vo.Member;
 import static com.home.mybatis.common.template.Template.getSqlSession;;
 
 public class MemberServiceImpl implements MemberService{
-
+	
+	private MemberDao mDao = new MemberDao();
 	/**
 	 * 회원가입용 서비스
 	 */
@@ -20,14 +21,14 @@ public class MemberServiceImpl implements MemberService{
 		//JDBC 템플릿 대신 쓰게될 클래스
 		SqlSession sqlSession = getSqlSession();
 		
-		int result = new MemberDao().insertMember(sqlSession,m);
+		int result = mDao.insertMember(sqlSession,m);
 		
 		if(result>0) {
-		  	sqlSession.commit();
+			sqlSession.commit();
 		} 
-		
+
 		sqlSession.close();
-		
+
 		return result;
 	}
 
@@ -35,9 +36,15 @@ public class MemberServiceImpl implements MemberService{
 	 * 로그인용 서비스
 	 */
 	@Override
-	public Member loginMember(String userId, String userPwd) {
+	public Member loginMember(Member m) {
+
+		SqlSession sqlSession = getSqlSession();
 		
-		return null;
+		Member loginUser = mDao.loginMember(sqlSession,m);
+		
+		sqlSession.close();
+		
+		return loginUser;
 	}
 
 	

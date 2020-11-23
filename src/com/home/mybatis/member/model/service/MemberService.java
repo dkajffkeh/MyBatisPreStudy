@@ -13,7 +13,7 @@ public interface MemberService { //상수필드  + 추상메소드 ==> 완성은
 	int insertMember(Member m);
 	
 	// 2.로그인용 서비스
-	Member loginMember(String userId, String userPwd);
+	Member loginMember(Member m);
 	
 	
 }

@@ -49,7 +49,7 @@
      <c:choose>
      	<c:when test="${ empty loginUser}">
         	<!-- 1. 로그인 성공전 보여져야할 로그인폼 -->
-            <form action="" method="post">
+            <form action="login.me" method="post">
                 <table>
                     <tr>
                         <td>아이디</td>
@@ -58,9 +58,8 @@
                     </tr>
                     <tr>
                         <td>비밀번호</td>
-                        <td><input type="password" name="userPwd"></td>
-                        
-                    </tr>
+                        <td><input type="password" name="userPwd"></td>                      
+                    </tr>        
                     <tr>
                         <td colspan="3" align="center">
                             <a href="enrollForm.me">회원가입</a>
@@ -72,7 +71,6 @@
             </c:when>
          <c:otherwise>
         <!-- 2. 로그인 성공후 보여져야할 div -->
-    
         <div>
             <table>
                 <tr>
@@ -80,7 +78,7 @@
                 </tr>
                 <tr>
                     <td><a href="">마이페이지</a></td>
-                    <td><a href="">로그아웃</a></td>
+                    <td><a href="logout.me">로그아웃</a></td>
                 </tr>
             </table>
         </div> 
@@ -91,8 +89,9 @@
     <div class="nav-area" align="center">
         <div class="menu">HOME</div>
         <div class="menu">공지사항</div>
-        <div class="menu">게시판</div>
+        <div class="menu" onclick="location.href='list.bo?currentPage=1'">게시판</div>
         <div class="menu">ETC</div>
     </div>
+
 </body>
 </html>

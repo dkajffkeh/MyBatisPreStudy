@@ -4,6 +4,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
+<mapper namespace="memberMapper">
+
   <!-- 실행하고자 하는 sql문 종류에 따라 태그 작성후 sql 문 기술 
   
   	   DAO에서 각 sql문을 찾아서 실행할 수 있도록 고유한 id 부여
@@ -13,13 +15,36 @@
   	    #{필드명 또는 변수명 또는 키값.} 사용
   	    
   	    id : 외부에서 DAO에서 참조하기 위한 해당 sql문의 고유 아이디
-  	    ParameterType : 해당 sql문에 전달된 객체의 타입(풀네임) 또는 별칭
-  	    
-  	    	
+  	    ParameterType : 해당 sql문에 전달된 객체의 타입(풀네임) 또는 별칭   	
   -->
-<mapper namespace="memberMapper">
+  
+  <!-- 
+  *resultMap 은 마이바티스의 가장 강력하고 가장 핵심적인 기능중 하나.
+  ResultSet 으로부터 조회된 컬럼값 하나씩 뽑아서
+  내가 지정한 자바 객체에 각 필드에 담에 JDBC 코드를 대부분 줄여주는 역할 담당
+  
+  type= ResultSet 에 조회된 한 행의 값들을 어떤 VO클래스 객체에 담을건지에 대한 타입 풀네임 또는 닉네임 작성
+   -->
+  <resultMap id="memberResultSet" type="Member">
+  	<!-- column 조회된 결과중 어떤 컼ㄹ럼의 값을 뽑을건지 (DB컬럼)
+  		 property: 그 뽑은 값을 해당 객체의 어떤 필드에 매핑시킬 것인가.
+  	  -->
+  	<result column="USER_NO" property="userNo"/>
+  	<result column="USER_ID" property="userId"/>
+  	<result column="USER_PWD" property="userPwd"/>
+  	<result column="USER_NAME" property="userName"/>
+  	<result column="EMAIL" property="userEmail"/>
+  	<result column="BIRTHDAY" property="birthday"/>
+  	<result column="GENDER" property="gender"/>
+  	<result column="PHONE" property="phone"/>
+  	<result column="ADDRESS" property="address"/>
+  	<result column="ENROLL_DATE" property="enrollDate"/>
+  	<result column="MODIFY_DATE" property="modifyDate"/>
+  	<result column="STATUS" property="status"/>
+  </resultMap>
+
 	<insert id="insertMember" 
-	        parameterType="com.home.mybatis.member.model.vo.Member">
+	        parameterType="Member">
 		INSERT INTO
            MEMBER
            (
@@ -46,4 +71,37 @@
           ,#{address}
            )
 	</insert>
+	
+	
+	
+	<select id="loginMember" 
+	        parameterType="Member" 
+	        resultMap="memberResultSet">	
+	 <!-- 
+	 *select 태그 같은 경우 반드시 기술해야되는 속성으로는 resultType 또는 resultMap 에 대해 기술 해야함
+	 resultType/resultMap : 해당 select문을 실행한 결과를 반환할 타입 즉,조회된 결과 Result 에 담김
+	 					     그 값을 자바에 어떤 타입에 담을것인지 직접 지정해줘야함.
+	  -->               
+	SELECT
+	      USER_NO
+	     ,USER_ID
+	     ,USER_PWD
+	     ,USER_NAME
+	     ,EMAIL
+	     ,BIRTHDAY
+	     ,GENDER
+	     ,PHONE
+	     ,ADDRESS
+	     ,ENROLL_DATE
+	     ,MODIFY_DATE
+	     ,STATUS
+	FROM 
+	     MEMBER
+	WHERE 
+	     USER_ID  =#{userId}
+	AND   
+	     USER_PWD =#{userPwd}
+	AND
+	     STATUS='Y'	
+	</select>
 </mapper>  
