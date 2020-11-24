@@ -12,20 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import com.home.mybatis.board.model.service.BoardService;
 import com.home.mybatis.board.model.service.BoardServiceImpl;
 import com.home.mybatis.board.model.vo.Board;
-import com.home.mybatis.board.model.vo.PageInfo;
-import com.home.mybatis.common.template.Pagination;
+import com.home.mybatis.board.model.vo.Reply;
 
 /**
- * Servlet implementation class BoardListController
+ * Servlet implementation class BoardDetailViewController
  */
-@WebServlet("/list.bo")
-public class BoardListController extends HttpServlet {
+@WebServlet("/detail.bo")
+public class BoardDetailViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardListController() {
+    public BoardDetailViewController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,24 +33,31 @@ public class BoardListController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		BoardService bService = new BoardServiceImpl();
 		
-		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		int listCount = bService.selectListCount(); //총 게시글 수를 DB에서 뽑아옴		
-
-		PageInfo pi = Pagination.pageInfo(listCount, currentPage , 10, 5);
+		int bno = Integer.parseInt(request.getParameter("bno"));
 		
-		ArrayList<Board> list = bService.selectList(pi);
+		int result = bService.increaseCount(bno);
 		
-		request.setAttribute("pi", pi);
-		request.setAttribute("list", list);
+		if(result>0) {
+			
+			Board b = bService.selectBoard(bno);
+			
+			ArrayList<Reply> rList = bService.selectReply(bno);
+			
+			request.setAttribute("b", b);
+			request.setAttribute("rList", rList);
+			request.getRequestDispatcher("WEB-INF/views/board/boardDetailView.jsp").forward(request, response);
+			
+		} else {
+			
+			request.setAttribute("errorMsg", "유효한 게시글이 아닙니다");
+			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);;
+			
+		}
 		
-		request.getRequestDispatcher("WEB-INF/views/board/boardListView.jsp").forward(request, response);
-		
-		}	
-		
-	
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

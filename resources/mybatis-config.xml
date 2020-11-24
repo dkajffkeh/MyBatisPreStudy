@@ -11,6 +11,7 @@
 	<typeAliases>
 			<typeAlias type="com.home.mybatis.member.model.vo.Member" alias="Member"/>
 			<typeAlias type="com.home.mybatis.board.model.vo.Board" alias="Board"/>
+			<typeAlias type="com.home.mybatis.board.model.vo.Reply" alias="Reply"/>
 	</typeAliases>	
 	<!-- 어떤 DB에 연결할것인지 정보를 선언하는 부분. -->
 	<environments default="development">  <!-- default는 여러개의 DB 가 연결됐다라는걸 가정할때 기본적으로 연결할 환경을 지정하는 속성 -->

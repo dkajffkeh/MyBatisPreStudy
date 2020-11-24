@@ -40,6 +40,8 @@
             margin-top: 50px;
         }
     </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+    
 </head>
 <body>
     <h1 align="center">Welcome to MyBatis World</h1>

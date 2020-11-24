@@ -1,12 +1,14 @@
 package com.home.mybatis.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.home.mybatis.board.model.vo.Board;
 import com.home.mybatis.board.model.vo.PageInfo;
+import com.home.mybatis.board.model.vo.Reply;
 
 public class BoardDao {
 
@@ -28,13 +30,52 @@ public class BoardDao {
 		//currentPage = 3 ==> 11~15 10생략
 		//currentPage = 4 ==> 16~20 15생략
 		
-		int offset = (pi.getCurrentPage())-1*pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset , pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectList", null ,rowBounds);
+
+	}
+
+	public int selectSearchCount(SqlSession sqlSession, String condition, String keyword) {
 		
+		HashMap<String,String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
 		
+		return sqlSession.selectOne("boardMapper.selectSearchCount",map);
+	}
+
+	public ArrayList<Board> selectSearchList(SqlSession sqlSession, String condition, String keyword, PageInfo pi) {
+		
+		HashMap<String,String> map = new HashMap<>();
+		
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchList",map, rowBounds);
+	}
+
+	public int increaseCount(SqlSession sqlSession, int bno) {
+		
+		return sqlSession.update("boardMapper.increaseCount", bno);
+		
+	}
+
+	public Board selectBoard(SqlSession sqlSession, int bno) {
+		
+		return sqlSession.selectOne("boardMapper.selectBoard", bno) ;
+	}
+
+	public ArrayList<Reply> selectReply(SqlSession sqlSession, int bno) {
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReply",bno);
 	}
 
 	
